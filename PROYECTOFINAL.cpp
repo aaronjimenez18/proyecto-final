@@ -2,11 +2,11 @@
 	UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO
 	FACULTAD DE ESTUDIOS SUPERIORES -ARAGON-
 
-	Computadoras y programacion. 
-	(c) Aarón jimenez robles. 32125951
-	
+	Computadoras y programacion.
+	(c) Aaron Jimenez Robles-321259541
+
 	Quiso decir: Programa principal de la aplicacion de la distancia de Levenstein.
-	
+
 ******************************************************************************************************************/
 
 
@@ -15,7 +15,6 @@
 #include "corrector.h"
 #define DEPURAR 0
 #define TAMABC 32
-
 
 void Burbujazo(char arr[][TAMTOKEN], int iEstadisticas[], int* n) {
 	for (int i = 0; i < (*n) - 1; ++i) {
@@ -64,16 +63,18 @@ void Burbujazo(char arr[][TAMTOKEN], int iEstadisticas[], int* n) {
 //Funciones publicas del proyecto
 /*****************************************************************************************************************
 	DICCIONARIO: Esta funcion crea el diccionario completo
-	char *	szNombre				:	Nombre del archivo de donde se sacaran las palabras del diccionario	
+	char *	szNombre				:	Nombre del archivo de donde se sacaran las palabras del diccionario
 	char	szPalabras[][TAMTOKEN]	:	Arreglo con las palabras completas del diccionario
 	int		iEstadisticas[]			:	Arreglo con el numero de veces que aparecen las palabras en el diccionario
 	int &	iNumElementos			:	Numero de elementos en el diccionario
 ******************************************************************************************************************/
-void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[], int &iNumElementos)
+void	Diccionario(char* szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[], int& iNumElementos)
 {
 	FILE* fpDicc;
 	char linea[4000];
+	char palabraDetectada[TAMTOKEN];
 	int i;
+	int indicePD;
 	iNumElementos = 0;
 	// abrir el achivo
 	if (DEPURAR == 1)
@@ -82,10 +83,11 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 	fopen_s(&fpDicc, szNombre, "r");
 	if (fpDicc != NULL)
 	{
-		
+
 		if (DEPURAR == 1)
 			printf("\nSi lo pude abrir");
 
+		indicePD = 0;
 		while (!feof(fpDicc))
 		{
 			fgets(linea, sizeof(linea), fpDicc);
@@ -93,6 +95,8 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 				printf("\n%s\n", linea);
 			for (i = 0; i < strlen(linea); i++)
 			{
+
+
 				// Detectar una palabra
 				if (linea[i] == ' ' || linea[i] == '\t' || linea[i] == '\n')
 
@@ -129,13 +133,9 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 			}
 			if (DEPURAR == 1)
 				printf("\nNumPalabras: %i\n", iNumElementos);
-                         
 
-// burbujazo
+			// burbujazo
 			Burbujazo(szPalabras, iEstadisticas, &iNumElementos);
-
-
-			
 
 
 
@@ -151,7 +151,6 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 	}
 }
 
-}
 
 /*****************************************************************************************************************
 	ClonaPalabras: toma una palabra y obtiene todas las combinaciones y permutaciones requeridas por el metodo
@@ -230,6 +229,14 @@ void	ClonaPalabras(
 
 
 }
+
+
+
+
+
+
+
+
 /*****************************************************************************************************************
 	ListaCandidatas: Esta funcion recupera desde el diccionario las palabras validas y su peso
 	Regresa las palabras ordenadas por su peso
@@ -292,6 +299,7 @@ void	ListaCandidatas(
 		}
 	}
 }
+
 
 
 
