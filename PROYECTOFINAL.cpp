@@ -47,14 +47,45 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 				printf("\n%s\n", linea);
 			for (i = 0; i < strlen(linea); i++)
 			{
-				if (linea[i] != ',')
+				// Detectar una palabra
+				if (linea[i] == ' ' || linea[i] == '\t' || linea[i] == '\n')
+
+				{
+					palabraDetectada[indicePD] = '\0';
+					strcpy_s(szPalabras[iNumElementos], TAMTOKEN, palabraDetectada);
+					iEstadisticas[iNumElementos+1]++;
 					if (DEPURAR == 1)
-						printf("%c", linea[i]);
-				if (linea[i] == ' ')
+						//printf("\np: %s", palabraDetectada);
+						indicePD = 0;
 					iNumElementos++;
+
+
+					// eliminar los espacios en blanco
+					// tabuladores y saltos de linea consecutivos
+
+					int contadorEspacios = 1;
+					int espaciosAEliminar = 100000;
+					while (linea[i + 1] == ' ' && contadorEspacios < espaciosAEliminar) {
+						i++;
+						contadorEspacios++;
+					}
+
+				}
+				else
+				{
+					if (linea[i] != '(' && linea[i] != ')' && linea[i] != ',' && linea[i] != '.')
+
+					{
+						palabraDetectada[indicePD] = towlower(linea[i]);
+						indicePD++;
+					}
+				}
 			}
 			if (DEPURAR == 1)
 				printf("\nNumPalabras: %i\n", iNumElementos);
+
+			
+
 
 
 
@@ -67,14 +98,8 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 		if (DEPURAR == 1)
 			printf("\nNo lo pude abrir");
 	}
+}
 
-	
-
-
-	//Sustituya estas lineas por su código
-	iNumElementos=1;
-	strcpy(szPalabras[0],"AquiVaElDiccionario");
-	iEstadisticas[0] = 1; // la primer palabra aparece solo una vez.
 }
 
 /*****************************************************************************************************************
