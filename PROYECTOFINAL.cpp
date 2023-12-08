@@ -14,6 +14,7 @@
 #include <string.h>
 #include "corrector.h"
 #define DEPURAR 0
+#define TAMABC 32
 
 
 void Burbujazo(char arr[][TAMTOKEN], int iEstadisticas[], int* n) {
