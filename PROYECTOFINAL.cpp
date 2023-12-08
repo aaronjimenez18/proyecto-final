@@ -242,6 +242,56 @@ void	ClonaPalabras(
 	int		iPeso[],							//Peso de las palabras en la lista final
 	int &	iNumLista)							//Numero de elementos en la szListaFinal
 ******************************************************************************************************************/
+void	ListaCandidatas(
+	char	szPalabrasSugeridas[][TAMTOKEN],	//Lista de palabras clonadas
+	int		iNumSugeridas,						//Lista de palabras clonadas
+	char	szPalabras[][TAMTOKEN],				//Lista de palabras del diccionario
+	int		iEstadisticas[],					//Lista de las frecuencias de las palabras
+	int		iNumElementos,						//Numero de elementos en el diccionario
+	char	szListaFinal[][TAMTOKEN],			//Lista final de palabras a sugerir
+	int		iPeso[],							//Peso de las palabras en la lista final
+	int& iNumLista)							//Numero de elementos en la szListaFinal
+{
+
+	strcpy_s(szListaFinal[0], szPalabrasSugeridas[0]); //la palabra candidata
+	iPeso[0] = iEstadisticas[0];			// el peso de la palabra candidata
+
+	iNumLista = 1;							//Una sola palabra candidata
+	iNumLista = 0;
+	for (int i = 0; i < iNumSugeridas; i++) {
+		for (int j = 0; j < iNumElementos; j++) {
+
+			/*Comparar de Lista de palabras del diccionario con la Lista de palabras clonadas */
+			if (strcmp(szPalabrasSugeridas[i], szPalabras[j]) == 0) {
+				/*Declaramos una bandera*/
+				bool bandera = false;
+				for (int k = 0; k < iNumLista && !bandera; k++)
+					/*Comparar de Lista de palabras del diccionario con Lista final de palabras a sugerir*/
+					if (strcmp(szListaFinal[k], szPalabras[j]) == 0)
+						bandera = true;
+				/*Si es verdad <<continuar>>*/
+				if (bandera) continue;
+				/*Pasar de la Lista de palabras clonadas a Lista final de palabras a sugerir*/
+				strcpy_s(szListaFinal[iNumLista], szPalabrasSugeridas[i]);
+				iPeso[iNumLista++] = iEstadisticas[j];
+			}
+		}
+	}
+	/*Comprobar con Numero de elementos en la szListaFinal*/
+	//Numero de elementos en la lista de opciones.
+	for (int i = 0; i < iNumLista; i++) {
+		for (int j = 0; j < iNumLista - 1; j++) {
+			/*Asignar la condicion*/
+			if (iPeso[j] < iPeso[j + 1]) {
+				/*Variables para el metodo de las candidatas*/
+				int iaux; char caux[50];
+				strcpy_s(caux, szListaFinal[j + 1]); iaux = iPeso[j + 1];
+				strcpy_s(szListaFinal[j + 1], szListaFinal[j]); iPeso[j + 1] = iPeso[j];
+				strcpy_s(szListaFinal[j], caux); iPeso[j] = iaux;
+			}
+		}
+	}
+}
 
 
 
